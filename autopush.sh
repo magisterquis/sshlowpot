@@ -13,8 +13,7 @@ if [[ -z $1 ]]; then
         exit 1
 fi
 
-cd $(dirame $0)
+cd $(/usr/bin/dirname $0)
 
-/usr/local/bin/git commit -m "Autopush" $1
-/usr/local/bin/git push
-
+/usr/local/bin/git commit --quiet --message "Autopush" $1
+/usr/local/bin/git push --quiet 
