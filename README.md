@@ -19,19 +19,19 @@ examples assume the external-facing port is 22 and sshlowpot is listening on
 
 OpenBSD:
 ```bash
-Assuming the external-facing interface is vio0
+#Assuming the external-facing interface is vio0
 
-# sysctl net.inet.ip.forwarding=1
-# echo "pass in on vio0 from any to (vio0) port 22 rdr-to 127.0.0.1 port 2222 >> /etc/pf.conf
-# pfctl -vf /etc/pf.conf
-$ sshlowopt -v
+[root@box]# sysctl net.inet.ip.forwarding=1
+[root@box]# echo "pass in on vio0 from any to (vio0) port 22 rdr-to 127.0.0.1 port 2222 >> /etc/pf.conf
+[root@box]# pfctl -vf /etc/pf.conf
+[user@box]$ sshlowopt -v
 ```
 
 Linux:
 ```bash
-# sysctl net.ipv4.ip_forward=1
-# iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 22 -j REDIRECT --to-port 2222
-$ sshlowpot -v
+[root@box]# sysctl net.ipv4.ip_forward=1
+[root@box]# iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 22 -j REDIRECT --to-port 2222
+[user@box]$ sshlowpot -v
 ```
  
 ## Usage
