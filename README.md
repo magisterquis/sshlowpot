@@ -35,7 +35,7 @@ Linux:
 ```
  
 ## Usage
-```bash
+```
 Usage: sshlowpot [options]
 
 Options are:
