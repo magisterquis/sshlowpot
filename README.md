@@ -42,7 +42,7 @@ Options are:
   -a string
     	Listen address (default "127.0.0.1:2222")
   -key string
-    	SSH private key file, which will be created if it doesn't already exist (default "id_rsa")
+    	SSH private key file, which will be created if it doesn't already exist (default "slp_id_rsa")
   -v	Enable verbose logging
   -ver string
     	SSH server version string (default "SSH-2.0-OpenSSH_7.0")
@@ -54,7 +54,7 @@ external port of choice to 127.0.0.1:2222.  Please don't run it as root on 22.
 ## Output
 Output should look something like the following (with -v):
 ```
-2016/01/19 19:43:41 Made SSH key and wrote it to id_rsa
+2016/01/19 19:43:41 Made SSH key and wrote it to slp_id_rsa
 2016/01/19 19:43:41 Listening on 127.0.0.1:2222
 2016/01/19 19:43:51 Address:168.235.89.22:52119 Connect
 2016/01/19 19:43:53 Address:168.235.89.22:52119 User:"exuser" Version:"SSH-2.0-OpenSSH_7.0" Key(ssh-rsa):BE9DA2A4D129652DB64AF6D71DEFD25F

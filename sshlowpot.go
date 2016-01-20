@@ -46,7 +46,7 @@ func main() {
 		)
 		privKey = flag.String(
 			"key",
-			"id_rsa",
+			"slp_id_rsa",
 			"SSH private key file, which will be created if it "+
 				"doesn't already exist",
 		)
