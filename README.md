@@ -52,7 +52,7 @@ For the most part, no options are required as long as you can forward your
 external port of choice to 127.0.0.1:2222.  Please don't run it as root on 22.
 
 ## Output
-Output should look something like the following (with -v):
+Output should look something like the following (with `-v`):
 ```
 2016/01/19 19:43:41 Made SSH key and wrote it to slp_id_rsa
 2016/01/19 19:43:41 Listening on 127.0.0.1:2222
