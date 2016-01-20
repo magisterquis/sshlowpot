@@ -37,17 +37,17 @@ func main() {
 		addr = flag.String(
 			"a",
 			"127.0.0.1:2222",
-			"Listen address",
+			"Listen `address`",
 		)
 		sver = flag.String(
 			"ver",
 			"SSH-2.0-OpenSSH_7.0",
-			"SSH server version string",
+			"SSH server `version` string",
 		)
 		privKey = flag.String(
 			"key",
 			"slp_id_rsa",
-			"SSH private key file, which will be created if it "+
+			"SSH private key `file`, which will be created if it "+
 				"doesn't already exist",
 		)
 	)

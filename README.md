@@ -39,12 +39,12 @@ Linux:
 Usage: sshlowpot [options]
 
 Options are:
-  -a string
+  -a address
     	Listen address (default "127.0.0.1:2222")
-  -key string
+  -key file
     	SSH private key file, which will be created if it doesn't already exist (default "slp_id_rsa")
   -v	Enable verbose logging
-  -ver string
+  -ver version
     	SSH server version string (default "SSH-2.0-OpenSSH_7.0")
 ```
 
