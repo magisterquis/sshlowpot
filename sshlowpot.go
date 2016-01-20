@@ -17,7 +17,6 @@ import (
 	"encoding/pem"
 	"flag"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"net"
@@ -246,40 +245,13 @@ func ci(m ssh.ConnMetadata) string {
 func handle(c net.Conn, conf *ssh.ServerConfig) {
 	verbose("Address:%v Connect", c.RemoteAddr())
 	/* Upgrade to an SSH connection */
-	sc, chans, reqs, err := ssh.NewServerConn(c, conf)
-	if nil != err {
-		/* EOF means all auth failed */
-		if (io.EOF == err) ||
-			("ssh: unexpected message type 1 (expected 50)" ==
-				err.Error()) {
-			verbose("Address:%v Disconnect", c.RemoteAddr())
-			return
-		}
-		log.Printf(
-			"Unable to handle connection from %v: %v",
-			c.RemoteAddr(),
-			err,
-		)
+	sc, _, _, err := ssh.NewServerConn(c, conf)
+	if nil != err { /* This should be the norm */
+		verbose("Address:%v Disconnect", c.RemoteAddr())
 		c.Close()
 		return
 	}
 	defer sc.Close()
-	/* Ignore requests */
-	go ssh.DiscardRequests(reqs)
-	/* Reject channel requests */
-	for nc := range chans {
-		if err := nc.Reject(
-			ssh.Prohibited,
-			"not allowed",
-		); nil != err {
-			log.Printf(
-				"Error rejecting channel request for %v "+
-					"from %v: %v",
-				nc.ChannelType(),
-				c.RemoteAddr(),
-				err,
-			)
-		}
-	}
-
+	/* If we're here, something funny happened */
+	log.Printf("%v authenticated successfully, killing.  This shouldn't happen.", ci(sc))
 }
