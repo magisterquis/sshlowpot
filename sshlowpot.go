@@ -249,7 +249,9 @@ func handle(c net.Conn, conf *ssh.ServerConfig) {
 	sc, chans, reqs, err := ssh.NewServerConn(c, conf)
 	if nil != err {
 		/* EOF means all auth failed */
-		if io.EOF == err {
+		if (io.EOF == err) ||
+			("ssh: unexpected message type 1 (expected 50)" ==
+				err.Error()) {
 			verbose("Address:%v Disconnect", c.RemoteAddr())
 			return
 		}
