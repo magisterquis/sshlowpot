@@ -5,6 +5,9 @@ Accepts SSH connections on a given port (2222 by default), records
 authentication attempts and tells the connecting client the authentication
 failed.
 
+**Please note that this is not yet production code.  In particular, the log
+output is subject to change.**
+
 ## Installation
 Get and build the source:
 ```bash
