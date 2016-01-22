@@ -234,10 +234,11 @@ func logKeyInt(
 /* ci returns a string containing info from an ssh.ConnMetadata */
 func ci(m ssh.ConnMetadata) string {
 	return fmt.Sprintf(
-		"Address:%v User:%q Version:%q",
+		"Address:%v Target:%v Version:%q User:%q",
 		m.RemoteAddr(),
-		m.User(),
+		victimName(m),
 		m.ClientVersion(),
+		m.User(),
 	)
 }
 
@@ -254,4 +255,23 @@ func handle(c net.Conn, conf *ssh.ServerConfig) {
 	defer sc.Close()
 	/* If we're here, something funny happened */
 	log.Printf("%v authenticated successfully, killing.  This shouldn't happen.", ci(sc))
+}
+
+var vn string
+
+/* victimName returns the name of the victim (honeypot) */
+func victimName(c ssh.ConnMetadata) string {
+	/* Used a cached value */
+	if "" != vn {
+		return vn
+	}
+	/* Try the hostname first */
+	h, err := os.Hostname()
+	if nil != err {
+		verbose("Unable to determine hostname: %v", err)
+		/* Failing that, use the local address */
+		return c.LocalAddr().String()
+	}
+	vn = h
+	return vn
 }
