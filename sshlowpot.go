@@ -64,6 +64,9 @@ Options are:
 	}
 	flag.Parse()
 
+	/* High-resolution logging */
+	log.SetFlags(log.LstdFlags | log.Lmicroseconds)
+
 	/* Server Config */
 	conf, err := serverConfig(*sver, *privKey)
 	if nil != err {
