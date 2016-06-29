@@ -125,10 +125,15 @@ func serverConfig(sv, pkf string) (*ssh.ServerConfig, error) {
 	}
 	/* If the file was empty, make a key, write the file */
 	if 0 == len(pkb) {
+		verbose(
+			"No private key in %v, making new key...",
+			privateKeyFile.Name(),
+		)
 		pkb, err = makeKeyInFile(privateKeyFile)
 		if nil != err {
 			return nil, err
 		}
+		verbose("Made SSH key and wrote it to %v", privateKeyFile)
 	} else {
 		verbose("Read SSH key file %v", pkf)
 	}
@@ -164,7 +169,6 @@ func makeKeyInFile(f *os.File) ([]byte, error) {
 	if _, err := f.Write(pkb); nil != err {
 		return nil, err
 	}
-	verbose("Made SSH key and wrote it to %v", f.Name())
 
 	/* Return the bytes */
 	return pkb, nil
