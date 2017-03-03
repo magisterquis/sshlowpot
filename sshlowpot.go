@@ -223,7 +223,7 @@ func logKeyInt(
 			err,
 		)
 	} else if 0 == len(a) { /* Didn't get an answer */
-		log.Printf("%v no keyboard-interactive answer")
+		log.Printf("%v no keyboard-interactive answer", ci(conn))
 	} else if 1 < len(a) { /* We mysteriously got back too many answers */
 		for i, v := range a {
 			log.Printf(
