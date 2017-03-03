@@ -21,6 +21,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"time"
 
 	"golang.org/x/crypto/ssh"
 )
@@ -48,6 +49,11 @@ func main() {
 			"slp_id_rsa",
 			"SSH private key `file`, which will be created if it "+
 				"doesn't already exist",
+		)
+		hsto = flag.Duration(
+			"to",
+			time.Minute,
+			"SSH handshake `timeout`",
 		)
 	)
 	flag.Usage = func() {
@@ -86,7 +92,7 @@ Options are:
 		if nil != err {
 			log.Fatalf("Unable to accept new connection: %v", err)
 		}
-		go handle(c, conf)
+		go handle(c, conf, *hsto)
 	}
 }
 
@@ -250,18 +256,33 @@ func ci(m ssh.ConnMetadata) string {
 }
 
 /* handle handles a new connection */
-func handle(c net.Conn, conf *ssh.ServerConfig) {
+func handle(c net.Conn, conf *ssh.ServerConfig, hsto time.Duration) {
+	defer c.Close()
 	verbose("Address:%v Connect", c.RemoteAddr())
-	/* Upgrade to an SSH connection */
-	sc, _, _, err := ssh.NewServerConn(c, conf)
-	if nil != err { /* This should be the norm */
-		verbose("Address:%v Disconnect", c.RemoteAddr())
-		c.Close()
+
+	ch := make(chan struct{}, 1)
+
+	/* Try to upgrade to an SSH connection */
+	go func(c net.Conn, conf *ssh.ServerConfig, ch chan<- struct{}) {
+		sc, _, _, err := ssh.NewServerConn(c, conf)
+		if nil == err { /* This should be the norm */
+			log.Printf(
+				"%v authenticated successfully, killing.  "+
+					"This shouldn't happen.",
+				ci(sc),
+			)
+		}
+		ch <- struct{}{}
 		return
+	}(c, conf, ch)
+
+	/* Wait for the upgrade (and auth fails) or a timeout */
+	select {
+	case <-ch:
+		verbose("Address:%v Disconnect", c.RemoteAddr())
+	case <-time.After(hsto):
+		verbose("Address:%v Handshake timeout", c.RemoteAddr())
 	}
-	defer sc.Close()
-	/* If we're here, something funny happened */
-	log.Printf("%v authenticated successfully, killing.  This shouldn't happen.", ci(sc))
 }
 
 var vn string
