@@ -46,6 +46,8 @@ Options are:
     	Listen address (default "127.0.0.1:2222")
   -key file
     	SSH private key file, which will be created if it doesn't already exist (default "slp_id_rsa")
+  -to timeout
+    	SSH handshake timeout (default 1m0s)
   -v	Enable verbose logging
   -ver version
     	SSH server version string (default "SSH-2.0-OpenSSH_7.0")
