@@ -11,8 +11,8 @@ output is subject to change.**
 ## Installation
 Get and build the source:
 ```bash
-go get github.com/kd5pbo/sshlowpot
-go install github.com/kd5pbo/sshlowpot
+go get github.com/magisterquis/sshlowpot
+go install github.com/magisterquis/sshlowpot
 ```
 Compiled binaries can be made available upon request.
 
