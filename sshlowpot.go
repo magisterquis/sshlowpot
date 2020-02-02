@@ -139,7 +139,10 @@ func serverConfig(sv, pkf string) (*ssh.ServerConfig, error) {
 		if nil != err {
 			return nil, err
 		}
-		verbose("Made SSH key and wrote it to %v", privateKeyFile)
+		verbose(
+			"Made SSH key and wrote it to %v",
+			privateKeyFile.Name(),
+		)
 	} else {
 		verbose("Read SSH key file %v", pkf)
 	}
